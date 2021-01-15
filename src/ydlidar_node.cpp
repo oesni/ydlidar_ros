@@ -56,9 +56,9 @@ int main(int argc, char * argv[]) {
     bool inverted = true;
     bool isSingleChannel = false;
     bool isTOFLidar = false;
+    std::string topic_name = "laser";
 
     ros::NodeHandle nh;
-    ros::Publisher scan_pub = nh.advertise<sensor_msgs::LaserScan>("scan", 1000);
     ros::NodeHandle nh_private("~");
     nh_private.param<std::string>("port", port, "/dev/ydlidar"); 
     nh_private.param<int>("baudrate", baudrate, 230400); 
@@ -75,7 +75,9 @@ int main(int argc, char * argv[]) {
     nh_private.param<int>("samp_rate", samp_rate, samp_rate);
     nh_private.param<bool>("isSingleChannel", isSingleChannel, isSingleChannel);
     nh_private.param<bool>("isTOFLidar", isTOFLidar, isTOFLidar);
- 
+    nh_private.param<std::string>("topic_name", topic_name, topic_name);
+
+    ros::Publisher scan_pub = nh.advertise<sensor_msgs::LaserScan>(topic_name, 1000);
 
     ignore_array = split(list ,',');
     if(ignore_array.size()%2){
